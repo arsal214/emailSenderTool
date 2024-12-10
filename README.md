@@ -1,1 +1,1 @@
-# emailSenderTool
+# Integral-Calculator
