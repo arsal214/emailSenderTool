@@ -56,7 +56,7 @@ class TemplateController extends Controller
                 ->with('warning', 'Server Error.');
         }
         return redirect()->route('templates.index')
-            ->with('success', 'Data delete  successfully.');
+            ->with('success', 'Data created  successfully.');
     }
 
     /**
