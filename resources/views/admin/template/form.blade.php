@@ -44,6 +44,10 @@
 
                         <input   title="Email Template" name="body" value="{{$template->body ?? null}}"  class="tinymce"/>
                     </div>
+                    <div class="text-start mt-3">
+                        <button type="submit" class="btn btn-primary">Submit form <i
+                                class="ph-paper-plane-tilt ms-2"></i></button>
+                    </div>
                 </form>
             </div>
         </div>
