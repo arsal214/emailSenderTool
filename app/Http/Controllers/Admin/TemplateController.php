@@ -12,12 +12,12 @@ use Illuminate\Http\Request;
 class TemplateController extends Controller
 {
 
-//    public function __construct() {
-//        $this->middleware('permission:templateSettings-list', ['only' => ['index']]);
-//        $this->middleware('permission:templateSettings-create', ['only' => ['store']]);
-//        $this->middleware('permission:templateSettings-edit', ['only' => ['edit', 'update']]);
-//        $this->middleware('permission:templateSettings-delete', ['only' => ['destroy']]);
-//    }
+    public function __construct() {
+        $this->middleware('permission:templateSettings-list', ['only' => ['index']]);
+        $this->middleware('permission:templateSettings-create', ['only' => ['store']]);
+        $this->middleware('permission:templateSettings-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:templateSettings-delete', ['only' => ['destroy']]);
+    }
 
     /**
      * Display a listing of the resource.
@@ -46,7 +46,10 @@ class TemplateController extends Controller
                 'body' => 'required',
             ]);
 
-            Template::storeOrUpdate($data, $request->template_id);
+            Template::updateOrCreate(
+                ['id' => $request->template_id],  // Search by ID if provided
+                $data  // Fields to update or create with
+            );
 
         } catch (\Throwable $th) {
             return redirect()->route('templates.index')

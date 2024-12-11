@@ -17,11 +17,11 @@ class CustomerController extends Controller
 
     function __construct()
     {
-//        $this->middleware('permission:customers-list',  ['only' => ['index']]);
-//        $this->middleware('permission:customers-view',  ['only' => ['show']]);
-//        $this->middleware('permission:customers-create',['only' => ['create','store']]);
-//        $this->middleware('permission:customers-edit',  ['only' => ['edit','update']]);
-//        $this->middleware('permission:customers-delete',['only' => ['destroy']]);
+        $this->middleware('permission:customers-list',  ['only' => ['index']]);
+        $this->middleware('permission:customers-view',  ['only' => ['show']]);
+        $this->middleware('permission:customers-create',['only' => ['create','store']]);
+        $this->middleware('permission:customers-edit',  ['only' => ['edit','update']]);
+        $this->middleware('permission:customers-delete',['only' => ['destroy']]);
     }
 
     /**
@@ -99,7 +99,10 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+        return redirect()->route('customers.index')
+            ->with('success', 'Data Delete successfully.');
+
     }
 
 
