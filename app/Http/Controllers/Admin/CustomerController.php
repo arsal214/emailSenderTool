@@ -17,11 +17,11 @@ class CustomerController extends Controller
 
     function __construct()
     {
-        $this->middleware('permission:customers-list',  ['only' => ['index']]);
-        $this->middleware('permission:customers-view',  ['only' => ['show']]);
-        $this->middleware('permission:customers-create',['only' => ['create','store']]);
-        $this->middleware('permission:customers-edit',  ['only' => ['edit','update']]);
-        $this->middleware('permission:customers-delete',['only' => ['destroy']]);
+        $this->middleware('permission:customers-list', ['only' => ['index']]);
+        $this->middleware('permission:customers-view', ['only' => ['show']]);
+        $this->middleware('permission:customers-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:customers-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:customers-delete', ['only' => ['destroy']]);
     }
 
     /**
@@ -110,29 +110,55 @@ class CustomerController extends Controller
     {
         try {
             DB::beginTransaction();
+
+            // Get the uploaded file
             $upload = $request->file('file');
             $ext = pathinfo($upload->getClientOriginalName(), PATHINFO_EXTENSION);
+
+            // Check if the file is a CSV
             if ($ext != 'csv') {
                 return redirect()->route('customers.index')
-                    ->with('warning', 'File can not be import  successfully.');
+                    ->with('warning', 'File cannot be imported successfully.');
             }
+
+            // Read the file contents
             $filePath = $upload->getRealPath();
             $file = fopen($filePath, 'r');
             $header = fgetcsv($file);
+
+            // Clean and normalize the header
             $escapedHeader = [];
             foreach ($header as $key => $value) {
                 $lheader = strtolower($value);
                 $escapedItem = preg_replace('/[^a-z]/', '', $lheader);
                 array_push($escapedHeader, $escapedItem);
             }
+
+            // Process each row of the CSV file
             while ($columns = fgetcsv($file)) {
+                // Clean data (remove non-numeric characters from phone number and other fields)
                 foreach ($columns as $key => $value) {
                     $value = preg_replace('/\D/', '', $value);
                 }
+
+                // Combine header with row values
                 $data = array_combine($escapedHeader, $columns);
+
+                // Extract necessary fields
                 $name = $data['firstname'];
                 $email = $data['email'];
+
+                // Check if both name and email are provided
                 if (!empty($name) && !empty($email)) {
+                    // Check if the email already exists in the database
+                    $existingCustomer = Customer::where('email', $email)->first();
+
+                    // If email exists, skip this record
+                    if ($existingCustomer) {
+                        continue; // Skip the current iteration if email exists
+                    }
+
+                    // Create a new customer record
                     $customer = new Customer();
                     $customer->first_name = utf8_encode($data['firstname']);
                     $customer->last_name = utf8_encode($data['lastname']);
@@ -147,18 +173,22 @@ class CustomerController extends Controller
                     $customer->save();
                 }
             }
+
+            // Commit the transaction
             DB::commit();
+
         } catch (\Throwable $th) {
+            // Rollback the transaction in case of error
             DB::rollBack();
             return redirect()->back()
-                ->with('warning', 'File import Unsuccessfully.');
+                ->with('warning', 'File import unsuccessful.');
         }
 
+// Return success message
         return redirect()->route('customers.index')
-            ->with('success', 'File import successfully.');
+            ->with('success', 'File imported successfully.');
+
     }
-
-
 
 
 }
