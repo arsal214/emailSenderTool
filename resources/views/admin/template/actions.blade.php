@@ -8,11 +8,6 @@
                 <form action="{{ route('templates.destroy',$list->id) }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    @can('templates-view')
-                        <a href="{{ route('templates.show',$list->id) }}" class="dropdown-item">
-                            <i class="ph-eye me-2"></i>{{ __('Show') }}
-                        </a>
-                    @endcan
                     @can('templates-edit')
                         <a href="{{ route('templates.edit',$list->id) }}" class="dropdown-item">
                             <i class="ph-note-pencil me-2"></i>{{ __('Edit') }}

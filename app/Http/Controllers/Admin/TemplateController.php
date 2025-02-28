@@ -84,17 +84,14 @@ class TemplateController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
         try {
             $template = Template::find($id);
-            $template->destory();
+            $template->delete();
         } catch (\Throwable $th) {
-
             return redirect()->route('templates.index')
                 ->with('warning', 'Data not delete  successfully.');
-
-
         }
         return redirect()->route('templates.index')
             ->with('success', 'Data delete  successfully.');
