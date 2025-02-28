@@ -9,11 +9,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
-class ImportSuppliersJob implements ShouldQueue
+class ImportCustomerJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -35,8 +33,6 @@ class ImportSuppliersJob implements ShouldQueue
      */
     public function handle()
     {
-//        DB::beginTransaction();
-//        try {
         $file = fopen($this->filePath, 'r');
         $header = fgetcsv($file);
         $escapedHeader = [];
@@ -69,10 +65,6 @@ class ImportSuppliersJob implements ShouldQueue
         }
 
         fclose($file);
-//            DB::commit();
-//        } catch (\Throwable $th) {
-//            DB::rollBack();
-        Log::error('Import Failed: ' );
-//        }
+        Log::error('Import Failed: ');
     }
 }
