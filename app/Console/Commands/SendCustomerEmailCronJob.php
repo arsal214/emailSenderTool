@@ -30,7 +30,7 @@ class SendCustomerEmailCronJob extends Command
      */
     public function handle()
     {
-        $templateId = 14;
+        $templateId = 1;
 //        $customers = Customer::where('status', 'Pending')
 //            ->take(299)
 //            ->get();
