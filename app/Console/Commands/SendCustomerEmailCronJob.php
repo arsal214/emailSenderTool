@@ -31,11 +31,11 @@ class SendCustomerEmailCronJob extends Command
     public function handle()
     {
         $templateId = 1;
-//        $customers = Customer::where('status', 'Pending')
-//            ->take(299)
-//            ->get();
+        $customers = Customer::where('status', 'Pending')
+            ->take(299)
+            ->get();
 
-        $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
+//        $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
 
         foreach ($customers as $i => $user) {
             SendEmailToCustomerJob::dispatch($user, $templateId)->delay(now()->addMinutes(3 * (++$i)));
