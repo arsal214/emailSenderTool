@@ -78,7 +78,7 @@ trait ActionsTrait
                 'status' => 'sent',
                 'template_id' => $template->id,
             ]);
-
+            Log::info("Email sent {$email}");
 
 
         } catch (\Exception $e) {

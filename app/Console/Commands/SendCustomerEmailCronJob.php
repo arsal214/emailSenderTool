@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Jobs\SendEmailToCustomerJob;
 use App\Models\Customer;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 
 class SendCustomerEmailCronJob extends Command
 {
@@ -29,10 +30,12 @@ class SendCustomerEmailCronJob extends Command
      */
     public function handle()
     {
-        $templateId = 3;
-        $customers = Customer::where('status', 'Pending')
-            ->take(299)
-            ->get();
+        $templateId = 1;
+//        $customers = Customer::where('status', 'Pending')
+//            ->take(299)
+//            ->get();
+
+        $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
 
         foreach ($customers as $i => $user) {
             SendEmailToCustomerJob::dispatch($user, $templateId)->delay(now()->addMinutes(10 * (++$i)));
