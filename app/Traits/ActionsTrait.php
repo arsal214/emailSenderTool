@@ -27,7 +27,7 @@ trait ActionsTrait
             $customer = Customer::where('email',$email)->first();
             if($customer){
                 $customer->update([
-                    'email_status' => 'Fail'
+                    'status' => 'Fail'
                 ]);
             }
             Log::error("Invalid email: {$email}");
@@ -44,7 +44,7 @@ trait ActionsTrait
             $customer = Customer::where('email',$email)->first();
             if($customer){
                 $customer->update([
-                    'email_status' => 'Fail'
+                    'status' => 'Fail'
                 ]);
             }
             Log::error("Invalid domain for email: {$email}");
@@ -68,7 +68,7 @@ trait ActionsTrait
             $customer = Customer::where('email',$email)->first();
             if($customer){
                 $customer->update([
-                    'email_status' => 'Sent'
+                    'status' => 'Sent'
                 ]);
             }
 
