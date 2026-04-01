@@ -38,7 +38,7 @@ class SendEmailToCustomerJob implements ShouldQueue
     public function handle()
     {
         $arr = [
-            '{$name}' => $this->user->first_name ?? ' ',
+            '{$user_name}' => $this->user->first_name ?? ' ',
         ];
         $this->sendDynamicMail($this->user->email, $this->templateId, $arr);
 
