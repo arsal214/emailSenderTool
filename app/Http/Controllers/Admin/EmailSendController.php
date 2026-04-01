@@ -26,8 +26,8 @@ class EmailSendController extends Controller
     {
 //        try {
 //            DB::beginTransaction();
-            // $customers = Customer::where('status', 'Pending')->get();
-            $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
+            $customers = Customer::where('status', 'Pending')->get();
+            // $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
             foreach ($customers as $index => $customer) {
                 $templateName = $request->template_name;
                 $arr = [
