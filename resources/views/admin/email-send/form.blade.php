@@ -38,7 +38,7 @@
                         <select class="form-control" name="template_name" id="">
                             <option value="">Select Template</option>
                             @foreach($templates as $template)
-                            <option value="{{$template->name}}">{{$template->name}}</option>
+                            <option value="{{$template->id}}">{{$template->name}}</option>
                             @endforeach
                         </select>
 

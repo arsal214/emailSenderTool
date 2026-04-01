@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SendWelcomeEmail;
+use App\Jobs\SendEmailToCustomerJob;
 use App\Models\Customer;
 use App\Models\Template;
 use App\Traits\ActionsTrait;
@@ -33,7 +33,7 @@ class EmailSendController extends Controller
                     '{$user_name}' => $customer->first_name,
                 ];
 
-                SendWelcomeEmail::dispatch($customer,$templateName, $arr)->delay(now()->addMinutes(5 * ($index + 1)));
+                SendEmailToCustomerJob::dispatch($customer,$templateName, $arr)->delay(now()->addMinutes(1 * ($index + 1)));
 
 //                $this->sendmail($customer->email, $templateName, $arr);
             }
