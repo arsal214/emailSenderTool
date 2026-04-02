@@ -61,7 +61,8 @@ trait ActionsTrait
             }
 
             // Replace placeholders in template body
-            $data = $params ? strtr($template->body, $params) : $template->body;
+            $body = html_entity_decode($template->body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            $data = $params ? str_replace(array_keys($params), array_values($params), $body) : $body;
 
             // Send dynamic mail
             Mail::to($email)->send(new DynamicMail($data, $template->subject));
