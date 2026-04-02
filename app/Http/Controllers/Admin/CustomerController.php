@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\ImportCustomerJob;
 use App\Jobs\ImportSuppliersJob;
-use App\Jobs\SendEmailToCustomerJob;
 use App\Jobs\SendWelcomeEmail;
 use App\Models\Customer;
 use App\Models\Template;
@@ -142,10 +141,14 @@ class CustomerController extends Controller
             'template_id' => 'required|exists:templates,id',
         ]);
 
-        SendEmailToCustomerJob::dispatch($customer, $request->template_id);
+        $arr = [
+            '{$user_name}' => $customer->first_name ?? '',
+        ];
+
+        $this->sendDynamicMail($customer->email, $request->template_id, $arr);
 
         return redirect()->route('customers.index')
-            ->with('success', 'Email queued for ' . $customer->first_name . ' ' . $customer->last_name . '.');
+            ->with('success', 'Email sent to ' . $customer->first_name . ' ' . $customer->last_name . '.');
     }
 
     public function import(Request $request)
