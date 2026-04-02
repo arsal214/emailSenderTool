@@ -46,6 +46,8 @@ Route::controller(UserController::class)->prefix('users')->as('users.')->group(f
 
 Route::resource('customers',CustomerController::class);
 Route::post('/customers/import', [CustomerController::class, 'import'])->name('customers.import');
+Route::post('/customers/{customer}/send-email', [CustomerController::class, 'sendEmail'])->name('customers.send-email');
+Route::patch('/customers/{customer}/reset-status', [CustomerController::class, 'resetStatus'])->name('customers.reset-status');
 
 /*
 |--------------------------------------------------------------------------

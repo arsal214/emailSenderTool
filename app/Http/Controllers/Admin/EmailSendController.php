@@ -29,12 +29,7 @@ class EmailSendController extends Controller
             $customers = Customer::where('status', 'Pending')->get();
             // $customers = Customer::where('email','arsalkamoka786@gmail.com')->get();
             foreach ($customers as $index => $customer) {
-                $templateName = $request->template_name;
-                $arr = [
-                    '{$user_name}' => $customer->first_name,
-                ];
-
-                SendEmailToCustomerJob::dispatch($customer,$templateName, $arr)->delay(now()->addMinutes(1 * ($index + 1)));
+                SendEmailToCustomerJob::dispatch($customer, $request->template_name)->delay(now()->addMinutes(1 * ($index + 1)));
 
 //                $this->sendmail($customer->email, $templateName, $arr);
             }

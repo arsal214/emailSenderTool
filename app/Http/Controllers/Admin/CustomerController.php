@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Jobs\ImportCustomerJob;
 use App\Jobs\ImportSuppliersJob;
+use App\Jobs\SendEmailToCustomerJob;
 use App\Jobs\SendWelcomeEmail;
 use App\Models\Customer;
 use App\Models\Template;
@@ -34,8 +35,9 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::orderBy('created_at', 'desc')->get();
+        $templates = Template::all();
 
-        return view('admin.customers.index', compact('customers'));
+        return view('admin.customers.index', compact('customers', 'templates'));
     }
 
     /**
@@ -56,7 +58,26 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'email'      => 'required|email|unique:customers,email',
+        ]);
+
+        Customer::create([
+            'first_name'              => $request->first_name,
+            'last_name'               => $request->last_name,
+            'email'                   => $request->email,
+            'phone_number'            => $request->phone_number,
+            'department'              => $request->department,
+            'profile_headline'        => $request->profile_headline,
+            'job_related'             => $request->job_related,
+            'company_website'         => $request->company_website,
+            'company_website_changes' => $request->company_website_changes,
+            'status'                  => 'Pending',
+        ]);
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Customer added successfully.');
     }
 
     /**
@@ -105,6 +126,26 @@ class CustomerController extends Controller
         return redirect()->route('customers.index')
             ->with('success', 'Data Delete successfully.');
 
+    }
+
+    public function resetStatus(Customer $customer)
+    {
+        $customer->update(['status' => 'Pending']);
+
+        return redirect()->route('customers.index')
+            ->with('success', $customer->first_name . ' ' . $customer->last_name . ' reset to Pending.');
+    }
+
+    public function sendEmail(Request $request, Customer $customer)
+    {
+        $request->validate([
+            'template_id' => 'required|exists:templates,id',
+        ]);
+
+        SendEmailToCustomerJob::dispatch($customer, $request->template_id);
+
+        return redirect()->route('customers.index')
+            ->with('success', 'Email queued for ' . $customer->first_name . ' ' . $customer->last_name . '.');
     }
 
     public function import(Request $request)

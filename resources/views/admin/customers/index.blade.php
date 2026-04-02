@@ -21,8 +21,16 @@
                 <div class="d-sm-flex align-items-center mb-3 mb-lg-0 ms-lg-3">
 
 
+                    <button class="btn btn-outline-secondary btn-labeled btn-labeled-start rounded-pill me-2" data-bs-toggle="modal"
+                            data-bs-target="#modal_import">
+            <span class="btn-labeled-icon bg-secondary text-white rounded-pill">
+                <i class="ph-upload-simple"></i>
+            </span>
+                        Import CSV
+                    </button>
+
                     <button class="btn btn-outline-primary btn-labeled btn-labeled-start rounded-pill" data-bs-toggle="modal"
-                            data-bs-target="#modal_default">
+                            data-bs-target="#modal_create_customer">
             <span class="btn-labeled-icon bg-primary text-white rounded-pill">
                 <i class="ph-plus"></i>
             </span>
@@ -81,6 +89,7 @@
 </div>
 
 @include('admin.customers.create')
+@include('admin.customers.modal-import')
 @endsection
 
 @section('script')
