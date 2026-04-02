@@ -60,8 +60,10 @@ trait ActionsTrait
                 return; // Skip if template is not found
             }
 
-            // Replace placeholders in template body
-            $body = html_entity_decode($template->body, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+            // Strip any HTML tags TinyMCE injected inside placeholder tokens e.g. {$user_name</strong>}
+            $body = preg_replace_callback('/\{[^}]*\}/', function ($match) {
+                return strip_tags($match[0]);
+            }, $template->body);
             $data = $params ? str_replace(array_keys($params), array_values($params), $body) : $body;
 
             // Send dynamic mail
