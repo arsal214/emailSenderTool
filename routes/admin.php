@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\TemplateController;
 use App\Http\Controllers\Admin\EmailSendController;
+use App\Http\Controllers\Admin\EmailSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,14 @@ Route::patch('/customers/{customer}/reset-status', [CustomerController::class, '
 
 Route::resource('templates',TemplateController::class);
 Route::resource('email-sends',EmailSendController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Email Settings Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('email-settings', [EmailSettingController::class, 'index'])->name('email-settings.index');
+Route::post('email-settings', [EmailSettingController::class, 'save'])->name('email-settings.save');
 
 /*
 |--------------------------------------------------------------------------

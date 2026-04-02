@@ -188,6 +188,11 @@
         </a>
     </li>
     <li>
+        <a class="waves-effect waves-dark" href="{{ route('email-settings.index') }}" aria-expanded="false">
+            <i class="ph-envelope-simple"></i><span class="hide-menu">Email Settings</span>
+        </a>
+    </li>
+    <li>
         <a class="waves-effect waves-dark" href="{{ route('settings.clear-cache') }}" aria-expanded="false">
             <i class="icons-Refresh"></i><span class="hide-menu">Clear Cache</span>
         </a>

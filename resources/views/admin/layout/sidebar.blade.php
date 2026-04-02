@@ -90,3 +90,9 @@
         <span>Settings</span>
     </a>
 </li>
+<li class="nav-item">
+    <a class="nav-link {{ request()->routeIs('email-settings*') ? 'active' : ''}}" href="{{ route('email-settings.index') }}">
+        <i class="ph-envelope-simple"></i>
+        <span>Email Settings</span>
+    </a>
+</li>
